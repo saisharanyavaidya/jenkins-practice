@@ -43,6 +43,7 @@ pipeline {
                 echo "Choice: ${params.CHOICE}"
                 echo "Password: ${params.PASSWORD}"
                 echo "triggeres testing again"
+                error 'some failure -- this will print failure block in post section'
             }
         }
     }
