@@ -1,11 +1,12 @@
 pipeline {
     agent {
-        label 'AGENT-1'
+        label 'AGENT-1' //Node
     }
     options {
         timeout(time: 30, unit: 'MINUTES')
-        disableConcurrentBuilds()
+        disableConcurrentBuilds() // to not allow multiple persons to build at a time
     }
+    // these will be available in console and we need to provide values before build--> you need to do build with parameters in Jenkins
     parameters {
         string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
         text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
@@ -13,15 +14,17 @@ pipeline {
         choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
         password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
     }
+    // these act as environment or global variables
     environment {
         DEPLOY_TO = 'Production'
         GREETING = 'Good Morning'
     }
+    //pipeline stages
     stages {
         stage('Build') {
             steps {
                 sh 'echo This is Build'
-                sh 'env'
+                sh 'env' // printing all environment variables declared above
             }
         }
         stage('Test') {
@@ -47,7 +50,7 @@ pipeline {
             }
         }
     }
-
+    // post section will run after build completion and after all the stages are executed
     post {
         always {
             echo "I will always run even when pipeline is success or failure"
